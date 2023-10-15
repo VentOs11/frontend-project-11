@@ -1,11 +1,15 @@
 import "bootstrap/dist/css/bootstrap.min.css";
+
 import onChange from "on-change";
-import validateFeedUrl from "./validateUrl";
 import axios from "axios";
+import flatten from "lodash/flatten";
 import i18next from "i18next";
+import differenceBy from "lodash/differenceBy";
+
+import validateFeedUrl from "./validateUrl";
 import text from "./text";
-import parseRss from "./parserRSS";
-import { FORM_STATE } from "./constants";
+import parseRss from "./parserRss";
+import { FORM_STATE, UPDATE_TIME } from "./constants";
 import createRenderer from "./render";
 
 const formEl = document.querySelector(".rss-form");
@@ -29,6 +33,7 @@ const defaultState = {
   form: FORM_STATE.empty,
   message: "",
   feeds: [],
+  posts: [],
 };
 
 const state = onChange(defaultState, function (path) {
@@ -49,14 +54,19 @@ const state = onChange(defaultState, function (path) {
   }
 });
 
-const loadFeed = (url) => {
-  const rssUrl = `https://allorigins.hexlet.app/get?disableCache=true&url=${encodeURIComponent(url)}`;
+const requestFeed = (rssUrl) => {
+  const url = `https://allorigins.hexlet.app/get?disableCache=true&url=${encodeURIComponent(
+    rssUrl
+  )}`;
 
-  axios
-    .get(rssUrl)
-    .then((response) => {
+  return axios.get(url).then((response) => response.data);
+};
+
+const loadFeed = (url) => {
+  requestFeed(url)
+    .then((data) => {
       try {
-        const { title, description, posts } = parseRss(response.data);
+        const { title, description, posts } = parseRss(data);
         state.form = FORM_STATE.success;
         state.message = i18next.t("successMessage");
         state.feeds.push({ title, description, url });
@@ -94,9 +104,26 @@ const onInput = () => {
   state.form = FORM_STATE.typing;
 };
 
+const startFeedsWatching = () => {
+  setTimeout(() => {
+    Promise.allSettled(state.feeds.map((feed) => requestFeed(feed.url))).then(
+      (results) => {
+        const newPosts = differenceBy(
+          flatten(results.map((r) => r.value?.posts)),
+          state.posts
+        );
+
+        state.posts.concat(newPosts);
+        startFeedsWatching();
+      }
+    );
+  }, UPDATE_TIME);
+};
+
 const startApp = () => {
   formEl.addEventListener("submit", onSubmit);
   inputEl.addEventListener("input", onInput);
+  startFeedsWatching();
 };
 
 i18next

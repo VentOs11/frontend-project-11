@@ -5,3 +5,5 @@ export const FORM_STATE = {
   error: "error",
   success: "success",
 };
+
+export const UPDATE_TIME = 5000;
