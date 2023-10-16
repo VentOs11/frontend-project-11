@@ -13,7 +13,8 @@ const parseRss = (data) => {
       i.getElementsByTagName("description")[0].textContent
     ),
     link: i.getElementsByTagName("link")[0].textContent,
-    timestamp: new Date(i.getElementsByTagName("pubDate")[0]).valueOf(),
+    timestamp: new Date(i.getElementsByTagName('pubDate')[0].textContent).valueOf(),
+    isRead: false,
   }));
 
   return { title, description, posts };
