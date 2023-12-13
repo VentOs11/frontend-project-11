@@ -103,13 +103,13 @@ const renderSending = ({ submit, urlInput, feedback }, i18next) => {
 
 const renderAdded = (
   {
-    submit, 
-    urlInput, 
-    feedback, 
-    form 
+    submit,
+    urlInput,
+    feedback,
+    form,
   },
-  i18next
-  ) => {
+  i18next,
+) => {
   submit.disabled = false;
   urlInput.classList.remove('is-invalid');
   feedback.classList.remove('text-danger');
@@ -160,8 +160,8 @@ const renderPosts = (state, { postsList }, i18next) => {
 
 const renderDisplayedPost = (
   state,
-  { modalHeader, modalBody, modalHref, },
-  id
+  { modalHeader, modalBody, modalHref },
+  id,
 ) => {
   const posts = state.posts.filter((post) => post.id === id);
   const [{ description, link, title }] = posts;
