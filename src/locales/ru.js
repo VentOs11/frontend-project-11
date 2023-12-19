@@ -28,7 +28,7 @@ export default {
       description: 'Начните читать RSS сегодня! Это легко, это красиво.',
       inputPlaceholder: 'ссылка RSS',
       inputButton: 'Добавить',
-      example: 'Пример: https://ru.hexlet.io/lessons.rss'
-    }
+      example: 'Пример: https://ru.hexlet.io/lessons.rss',
+    },
   },
 };

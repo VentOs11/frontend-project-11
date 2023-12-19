@@ -99,9 +99,8 @@ const app = () => {
     description: document.querySelector('#description'),
     inputBtn: document.querySelector('#input-btn'),
     example: document.querySelector('#example'),
-    inputLabel: document.querySelector('#input-label')
+    inputLabel: document.querySelector('#input-label'),
   };
-  
 
   const i18nextInstance = i18next.createInstance();
   i18nextInstance.init({
@@ -109,7 +108,7 @@ const app = () => {
     debug: false,
     resources,
   })
-    .then(function(t){
+    .then((t) => {
       elements.title.innerHTML = t(resources.ru.translation.textElements.title);
       elements.description.innerHTML = t(resources.ru.translation.textElements.description);
       elements.inputBtn.innerHTML = t(resources.ru.translation.textElements.inputButton);
