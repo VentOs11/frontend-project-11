@@ -4,7 +4,7 @@ import axios from 'axios';
 import i18next from 'i18next';
 import { uniqueId } from 'lodash';
 import render from './render.js';
-import parse from './rss.js';
+import parse from './parser.js';
 import resources from './locales';
 
 const addProxy = (url) => {
@@ -93,7 +93,15 @@ const app = () => {
     modalHeader: document.querySelector('.modal-header'),
     modalBody: document.querySelector('.modal-body'),
     modalHref: document.querySelector('.full-article'),
+    readBtn: document.querySelector('#read-btn'),
+    closedBtn: document.querySelector('#closed-btn'),
+    title: document.querySelector('#title'),
+    description: document.querySelector('#description'),
+    inputBtn: document.querySelector('#input-btn'),
+    example: document.querySelector('#example'),
+    inputLabel: document.querySelector('#input-label')
   };
+  
 
   const i18nextInstance = i18next.createInstance();
   i18nextInstance.init({
@@ -101,6 +109,16 @@ const app = () => {
     debug: false,
     resources,
   })
+    .then(function(t){
+      elements.title.innerHTML = t(resources.ru.translation.textElements.title);
+      elements.description.innerHTML = t(resources.ru.translation.textElements.description);
+      elements.inputBtn.innerHTML = t(resources.ru.translation.textElements.inputButton);
+      elements.example.innerHTML = t(resources.ru.translation.textElements.example);
+      elements.readBtn.innerHTML = t(resources.ru.translation.modalButtons.read);
+      elements.closedBtn.innerHTML = t(resources.ru.translation.modalButtons.closed);
+      elements.inputLabel.innerHTML = t(resources.ru.translation.textElements.inputPlaceholder);
+      elements.urlInput.placeholder = t(resources.ru.translation.textElements.inputPlaceholder);
+    })
     .then(() => {
       const watchedState = onChange(state, render(state, elements, i18nextInstance));
       const makeSchema = (validatedLinks) => yup.string()

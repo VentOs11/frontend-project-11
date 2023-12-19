@@ -19,5 +19,16 @@ export default {
     buttons: {
       view: 'Просмотр',
     },
+    modalButtons: {
+      closed: 'Закрыть',
+      read: 'Читать полностью',
+    },
+    textElements: {
+      title: 'RSS агрегатор',
+      description: 'Начните читать RSS сегодня! Это легко, это красиво.',
+      inputPlaceholder: 'ссылка RSS',
+      inputButton: 'Добавить',
+      example: 'Пример: https://ru.hexlet.io/lessons.rss'
+    }
   },
 };
